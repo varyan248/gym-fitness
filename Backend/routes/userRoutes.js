@@ -50,6 +50,10 @@ router.put('/profile', protect, async (req, res) => {
       weight: updatedUser.weight,
       goal: updatedUser.goal,
       role: updatedUser.role,
+      plan: updatedUser.plan,
+      planStartDate: updatedUser.planStartDate,
+      planEndDate: updatedUser.planEndDate,
+      isPlanActive: updatedUser.isPlanActive,
       createdAt: updatedUser.createdAt,
       updatedAt: updatedUser.updatedAt
     };
@@ -107,6 +111,61 @@ router.get('/weekly-workout', protect, async (req, res) => {
     res.json({ success: true, workouts });
   } catch (error) {
     console.error('Error fetching weekly workout:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// @route   POST /api/users/buy-plan
+router.post('/buy-plan', protect, async (req, res) => {
+  try {
+    const { plan } = req.body;
+    
+    if (!['1 Month', '6 Months', '1 Year'].includes(plan)) {
+      return res.status(400).json({ success: false, message: 'Invalid plan selected' });
+    }
+    
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+    
+    const startDate = new Date();
+    let endDate = new Date();
+    
+    if (plan === '1 Month') {
+      endDate.setMonth(endDate.getMonth() + 1);
+    } else if (plan === '6 Months') {
+      endDate.setMonth(endDate.getMonth() + 6);
+    } else if (plan === '1 Year') {
+      endDate.setFullYear(endDate.getFullYear() + 1);
+    }
+    
+    user.plan = plan;
+    user.planStartDate = startDate;
+    user.planEndDate = endDate;
+    user.isPlanActive = true;
+    
+    const updatedUser = await user.save();
+    
+    const userResponse = {
+      _id: updatedUser._id,
+      id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      role: updatedUser.role,
+      plan: updatedUser.plan,
+      planStartDate: updatedUser.planStartDate,
+      planEndDate: updatedUser.planEndDate,
+      isPlanActive: updatedUser.isPlanActive,
+    };
+    
+    res.json({
+      success: true,
+      message: 'Plan purchased successfully',
+      user: userResponse,
+    });
+  } catch (error) {
+    console.error('Error buying plan:', error);
     res.status(500).json({ success: false, message: error.message });
   }
 });

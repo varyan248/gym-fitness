@@ -87,6 +87,13 @@ const protect = async (req, res, next) => {
         });
       }
       
+      // Check if plan is expired
+      if (user.isPlanActive && user.planEndDate && new Date() > user.planEndDate) {
+        user.isPlanActive = false;
+        user.plan = 'None';
+        await user.save();
+      }
+      
       // Attach user to request object
       req.user = user;
       next();

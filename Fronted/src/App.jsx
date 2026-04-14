@@ -9,6 +9,7 @@ import UserProfile from './pages/UserProfile';
 import WorkoutPlanner from './pages/WorkoutPlanner';
 import DietPlanner from './pages/DietPlanner';
 import ProgressTracker from './pages/ProgressTracker';
+import Plans from './pages/Plans';
 import PrivateRoute from './components/PrivateRoute';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
@@ -29,6 +30,7 @@ function App() {
               <Route path="/workouts" element={<PrivateRoute><WorkoutPlanner /></PrivateRoute>} />
               <Route path="/diets" element={<PrivateRoute><DietPlanner /></PrivateRoute>} />
               <Route path="/progress" element={<PrivateRoute><ProgressTracker /></PrivateRoute>} />
+              <Route path="/plans" element={<PrivateRoute><Plans /></PrivateRoute>} />
             </Routes>
           </div>
         </Router>

@@ -111,6 +111,32 @@ const Dashboard = () => {
         <p className="text-gray-600 dark:text-gray-400 mb-8">
           Today is {currentDay} - Ready to crush your fitness goals?
         </p>
+
+        {/* Plan Status Banner */}
+        <div className="mb-8">
+          {user.isPlanActive ? (
+            <div className="bg-gradient-to-r from-green-500 to-green-600 rounded-xl p-4 text-white flex justify-between items-center shadow-lg">
+              <div>
+                <p className="font-bold text-lg">Active Subscription: {user.plan}</p>
+                <p className="text-sm text-green-100">Valid until: {new Date(user.planEndDate).toLocaleDateString()}</p>
+              </div>
+              <button onClick={() => navigate('/plans')} className="bg-white text-green-600 px-4 py-2 rounded-lg font-semibold hover:bg-green-50 transition transform hover:scale-105">
+                View Plans
+              </button>
+            </div>
+          ) : (
+            <div className="bg-gradient-to-r from-red-500 to-pink-600 rounded-xl p-4 text-white flex justify-between items-center shadow-lg">
+              <div>
+                <p className="font-bold text-lg">No Active Plan</p>
+                <p className="text-sm text-red-100">Subscribe to a plan to unlock premium features and personal training.</p>
+              </div>
+              <button onClick={() => navigate('/plans')} className="bg-white text-red-600 px-4 py-2 rounded-lg font-semibold hover:bg-red-50 transition transform hover:scale-105">
+                Subscribe Now
+              </button>
+            </div>
+          )}
+        </div>
+        
         
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">

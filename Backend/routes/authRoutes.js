@@ -77,6 +77,10 @@ router.post('/register', async (req, res) => {
         height: user.height,
         weight: user.weight,
         goal: user.goal,
+        plan: user.plan,
+        planStartDate: user.planStartDate,
+        planEndDate: user.planEndDate,
+        isPlanActive: user.isPlanActive,
       };
       
       res.status(201).json({
@@ -134,6 +138,10 @@ router.post('/login', async (req, res) => {
         height: user.height,
         weight: user.weight,
         goal: user.goal,
+        plan: user.plan,
+        planStartDate: user.planStartDate,
+        planEndDate: user.planEndDate,
+        isPlanActive: user.isPlanActive,
       };
       
       res.json({

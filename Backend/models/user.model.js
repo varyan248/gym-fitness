@@ -47,6 +47,20 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    plan: {
+      type: String,
+      default: 'None',
+    },
+    planStartDate: {
+      type: Date,
+    },
+    planEndDate: {
+      type: Date,
+    },
+    isPlanActive: {
+      type: Boolean,
+      default: false,
+    },
     lastLogin: {
       type: Date,
     },

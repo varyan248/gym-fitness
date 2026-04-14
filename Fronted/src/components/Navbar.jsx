@@ -126,6 +126,9 @@ const Navbar = () => {
               <Link to="/progress" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
                 Progress
               </Link>
+              <Link to="/plans" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
+                Plans
+              </Link>
               
               {/* Admin Links */}
               {isAdmin && (
