@@ -164,6 +164,33 @@ router.get('/me', protect, async (req, res) => {
   }
 });
 
+// @route   PUT /api/auth/change-password
+// @desc    Change user password
+router.put('/change-password', protect, async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ success: false, message: 'Please provide current and new password' });
+    }
+
+    const user = await User.findById(req.user._id).select('+password');
+    
+    const isMatch = await user.matchPassword(currentPassword);
+    if (!isMatch) {
+      return res.status(401).json({ success: false, message: 'Incorrect current password' });
+    }
+
+    user.password = newPassword;
+    await user.save();
+
+    res.json({ success: true, message: 'Password updated successfully' });
+  } catch (error) {
+    console.error('Change password error:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
 // Add this endpoint to your authRoutes.js
 router.post('/register-admin', async (req, res) => {
   try {
@@ -173,48 +200,50 @@ router.post('/register-admin', async (req, res) => {
     const ADMIN_SECRET = process.env.ADMIN_SECRET || 'MySuperSecretKey123!';
     
     if (adminSecret !== ADMIN_SECRET) {
-      return res.status(403).json({ error: 'Invalid admin secret' });
+      return res.status(403).json({ success: false, message: 'Invalid admin secret' });
     }
 
     // Check if user exists
-    const existingUser = await prisma.user.findUnique({
-      where: { email }
-    });
+    const userExists = await User.findOne({ email });
 
-    if (existingUser) {
-      return res.status(400).json({ error: 'User already exists' });
+    if (userExists) {
+      return res.status(400).json({ success: false, message: 'User already exists' });
     }
 
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
     // Create admin user
-    const admin = await prisma.user.create({
-      data: {
-        name,
-        email,
-        password: hashedPassword,
-        isAdmin: true,
-        planType: 'YEARLY',
-        paymentStatus: 'PAID',
-        lastPaymentDate: new Date(),
-        expiryDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)
-      }
+    const user = await User.create({
+      name,
+      email,
+      password,
+      role: 'admin',
     });
 
-    res.status(201).json({
-      success: true,
-      message: 'Admin registered successfully',
-      admin: {
-        id: admin.id,
-        name: admin.name,
-        email: admin.email,
-        isAdmin: admin.isAdmin
-      }
-    });
+    console.log('Admin registered:', user.name, user.email);
+
+    if (user) {
+      // Generate token
+      const token = generateToken(user._id);
+
+      // Format response
+      const userResponse = {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      };
+
+      res.status(201).json({
+        success: true,
+        message: 'Admin registered successfully',
+        token: token,
+        user: userResponse,
+      });
+    } else {
+      res.status(400).json({ success: false, message: 'Invalid user data' });
+    }
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Admin registration failed' });
+    console.error('Admin registration error:', error);
+    res.status(500).json({ success: false, message: error.message });
   }
 });
 

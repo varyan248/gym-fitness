@@ -290,11 +290,12 @@ export const AuthProvider = ({ children }) => {
         const { token: authToken, user: userData } = response.data;
         handleAuthSuccess(authToken, userData);
         toast.success('Login successful!');
-        return true;
+        return { success: true, user: userData };
       }
+      return { success: false };
     } catch (error) {
       toast.error(error.response?.data?.message || 'Login failed');
-      return false;
+      return { success: false };
     }
   };
 
@@ -325,6 +326,30 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const registerAdmin = async (userData, adminSecret) => {
+    try {
+      const formattedData = {
+        name: userData.fullName || userData.name,
+        email: userData.email,
+        password: userData.password,
+        adminSecret
+      };
+
+      const response = await axios.post(`${API_URL}/auth/register-admin`, formattedData);
+      
+      if (response.data.success) {
+        const { token: authToken, user: registeredUser } = response.data;
+        handleAuthSuccess(authToken, registeredUser);
+        toast.success('Admin registration successful!');
+        return true;
+      }
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || 'Admin registration failed';
+      toast.error(errorMessage);
+      return false;
+    }
+  };
+
   const handleAuthSuccess = (authToken, userData) => {
     localStorage.setItem('token', authToken);
     axios.defaults.headers.common['Authorization'] = `Bearer ${authToken}`;
@@ -350,6 +375,7 @@ export const AuthProvider = ({ children }) => {
     token,
     login,
     register,
+    registerAdmin,
     logout,
     updateUser,
     loading,

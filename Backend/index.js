@@ -25,7 +25,7 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 const authRoutes = require('./routes/authRoutes.js');
 const userRoutes = require('./routes/userRoutes.js');
-// const adminRoutes = require('./routes/adminRoutes.js');
+const adminRoutes = require('./routes/adminRoutes.js');
 const workoutRoutes = require('./routes/workoutRoutes.js');
 const dietRoutes = require('./routes/dietRoutes.js');
 const progressRoutes = require('./routes/progressRoutes.js');
@@ -33,7 +33,7 @@ const progressRoutes = require('./routes/progressRoutes.js');
 // Use routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
-// app.use('/api/admin', adminRoutes);
+app.use('/api/admin', adminRoutes);
 app.use('/api/workouts', workoutRoutes);
 app.use('/api/diets', dietRoutes);
 app.use('/api/progress', progressRoutes);

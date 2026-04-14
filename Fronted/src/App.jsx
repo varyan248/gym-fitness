@@ -9,7 +9,6 @@ import UserProfile from './pages/UserProfile';
 import WorkoutPlanner from './pages/WorkoutPlanner';
 import DietPlanner from './pages/DietPlanner';
 import ProgressTracker from './pages/ProgressTracker';
-// import AdminDashboard from './pages/AdminDashboard';
 import PrivateRoute from './components/PrivateRoute';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
@@ -30,10 +29,6 @@ function App() {
               <Route path="/workouts" element={<PrivateRoute><WorkoutPlanner /></PrivateRoute>} />
               <Route path="/diets" element={<PrivateRoute><DietPlanner /></PrivateRoute>} />
               <Route path="/progress" element={<PrivateRoute><ProgressTracker /></PrivateRoute>} />
-              {/* <Route path="/admin" element={<PrivateRoute adminOnly><AdminDashboard /></PrivateRoute>} />
-              <Route path="/admin/users" element={<PrivateRoute adminOnly><AdminUsers /></PrivateRoute>} />
-              <Route path="/admin/workouts" element={<PrivateRoute adminOnly><AdminWorkouts /></PrivateRoute>} />
-              <Route path="/admin/diets" element={<PrivateRoute adminOnly><AdminDiets /></PrivateRoute>} /> */}
             </Routes>
           </div>
         </Router>

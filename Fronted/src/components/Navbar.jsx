@@ -99,7 +99,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, isAdmin } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -128,25 +128,11 @@ const Navbar = () => {
               </Link>
               
               {/* Admin Links */}
-              {user?.isAdmin && (
+              {isAdmin && (
                 <div className="relative group">
-                  <button className="text-gray-700 dark:text-gray-300 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
-                    👑 Admin Panel
-                  </button>
-                  <div className="absolute hidden group-hover:block bg-white dark:bg-gray-800 shadow-lg rounded-md mt-1 w-48">
-                    <Link to="/admin" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
-                      Dashboard
-                    </Link>
-                    <Link to="/admin/users" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
-                      Manage Users
-                    </Link>
-                    <Link to="/admin/workouts" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
-                      Manage Workouts
-                    </Link>
-                    <Link to="/admin/diets" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
-                      Manage Diets
-                    </Link>
-                  </div>
+                  <a href="http://localhost:5174/" target="_blank" rel="noopener noreferrer" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium inline-flex items-center">
+                    👑 Admin Panel <span className="ml-1 text-xs opacity-50">↗</span>
+                  </a>
                 </div>
               )}
             </div>

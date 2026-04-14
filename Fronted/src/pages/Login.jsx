@@ -120,13 +120,14 @@ const Login = () => {
     setLoading(true);
     
     try {
-      console.log("Attempting login with:", { email });
-      const success = await login(email, password);
-      console.log("Login success status:", success);
+      const result = await login(email, password);
       
-      if (success) {
-        console.log("Navigating to home page...");
-        navigate("/");
+      if (result && result.success) {
+        if(result.user?.role === 'admin') {
+           navigate("/admin");
+        } else {
+           navigate("/");
+        }
       }
     } catch (error) {
       console.error("Login submission error:", error);
@@ -201,13 +202,21 @@ const Login = () => {
           </button>
         </form>
 
-        <div className="text-center">
+        <div className="text-center space-y-3">
           <Link
             to="/register"
-            className="text-sm text-blue-600 hover:text-blue-500 dark:text-blue-400"
+            className="block text-sm text-blue-600 hover:text-blue-500 dark:text-blue-400"
           >
             Don't have an account? Sign up
           </Link>
+          <div className="border-t border-gray-200 dark:border-gray-700 pt-3">
+            <a
+              href="http://localhost:5174/"
+              className="text-xs font-semibold text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors"
+            >
+              Authorized Personnel Login
+            </a>
+          </div>
         </div>
       </motion.div>
     </div>
