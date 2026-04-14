@@ -13,6 +13,8 @@ const Plans = () => {
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState('');
   const [processing, setProcessing] = useState(false);
+  const [cardDetails, setCardDetails] = useState({ number: '', name: '', expiry: '', cvv: '' });
+  const [upiId, setUpiId] = useState('');
   const navigate = useNavigate();
 
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
@@ -20,7 +22,7 @@ const Plans = () => {
   const plans = [
     {
       name: '1 Month',
-      price: '$30',
+      price: '1500',
       duration: '1 Month',
       icon: <FaStar className="text-4xl text-blue-500 mb-4" />,
       features: ['Access to gym equipment', 'Locker access', '1 Personal Training session'],
@@ -28,7 +30,7 @@ const Plans = () => {
     },
     {
       name: '6 Months',
-      price: '$150',
+      price: '4000',
       duration: '6 Months',
       icon: <FaBolt className="text-4xl text-purple-500 mb-4" />,
       features: ['Access to gym equipment', 'Locker access', '5 Personal Training sessions', 'Diet plan consultation'],
@@ -37,7 +39,7 @@ const Plans = () => {
     },
     {
       name: '1 Year',
-      price: '$250',
+      price: '6000',
       duration: '1 Year',
       icon: <FaCrown className="text-4xl text-yellow-500 mb-4" />,
       features: ['Access to gym equipment', 'Locker access', '12 Personal Training sessions', 'Diet plan consultation', 'Free merchandise'],
@@ -62,6 +64,18 @@ const Plans = () => {
       return;
     }
 
+    if (paymentMethod === 'Credit/Debit Card') {
+      if (!cardDetails.number || !cardDetails.name || !cardDetails.expiry || !cardDetails.cvv) {
+        toast.error('Please fill in all card details');
+        return;
+      }
+    } else if (paymentMethod === 'UPI (GPay, PhonePe, Paytm)') {
+      if (!upiId) {
+        toast.error('Please enter your UPI ID');
+        return;
+      }
+    }
+
     setProcessing(true);
 
     // Simulate payment gateway delay
@@ -80,7 +94,7 @@ const Plans = () => {
 
         if (response.data.success && response.data.user) {
           updateUser(response.data.user);
-          toast.success(`Payment successful via ${paymentMethod}! Subscribed to ${selectedPlan.name} plan.`);
+          toast.success(`Your plan successfully buy! Subscribed to ${selectedPlan.name} plan.`);
           setShowModal(false);
         }
       } catch (error) {
@@ -210,44 +224,111 @@ const Plans = () => {
                 <div className="space-y-4 mb-8">
                   <p className="font-semibold text-gray-700 dark:text-gray-300">Select Payment Method</p>
                   
-                  <label className={`cursor-pointer flex items-center p-4 border rounded-xl transition ${paymentMethod === 'Credit/Debit Card' ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/30' : 'border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50'}`}>
-                    <input 
-                      type="radio" 
-                      name="payment_method" 
-                      value="Credit/Debit Card"
-                      checked={paymentMethod === 'Credit/Debit Card'}
-                      onChange={(e) => setPaymentMethod(e.target.value)}
-                      className="text-indigo-600 focus:ring-indigo-500 w-5 h-5"
-                    />
-                    <FaCreditCard className="mx-4 text-gray-500 text-xl" />
-                    <span className="font-medium text-gray-900 dark:text-white">Credit / Debit Card</span>
-                  </label>
+                  <div className="mb-3">
+                    <label className={`cursor-pointer flex items-center p-4 border rounded-xl transition ${paymentMethod === 'Credit/Debit Card' ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/30' : 'border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50'}`}>
+                      <input 
+                        type="radio" 
+                        name="payment_method" 
+                        value="Credit/Debit Card"
+                        checked={paymentMethod === 'Credit/Debit Card'}
+                        onChange={(e) => setPaymentMethod(e.target.value)}
+                        className="text-indigo-600 focus:ring-indigo-500 w-5 h-5"
+                      />
+                      <FaCreditCard className="mx-4 text-gray-500 text-xl" />
+                      <span className="font-medium text-gray-900 dark:text-white">Credit / Debit Card</span>
+                    </label>
 
-                  <label className={`cursor-pointer flex items-center p-4 border rounded-xl transition ${paymentMethod === 'UPI (GPay, PhonePe, Paytm)' ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/30' : 'border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50'}`}>
-                    <input 
-                      type="radio" 
-                      name="payment_method" 
-                      value="UPI (GPay, PhonePe, Paytm)"
-                      checked={paymentMethod === 'UPI (GPay, PhonePe, Paytm)'}
-                      onChange={(e) => setPaymentMethod(e.target.value)}
-                      className="text-indigo-600 focus:ring-indigo-500 w-5 h-5"
-                    />
-                    <FaMobileAlt className="mx-4 text-gray-500 text-xl" />
-                    <span className="font-medium text-gray-900 dark:text-white">UPI (GPay, PhonePe, Paytm)</span>
-                  </label>
+                    <AnimatePresence>
+                      {paymentMethod === 'Credit/Debit Card' && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          className="overflow-hidden px-2 mt-2 space-y-3"
+                        >
+                          <input 
+                            type="text" 
+                            placeholder="Card Number" 
+                            value={cardDetails.number}
+                            onChange={(e) => setCardDetails({...cardDetails, number: e.target.value})}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                          />
+                          <input 
+                            type="text" 
+                            placeholder="Name on Card" 
+                            value={cardDetails.name}
+                            onChange={(e) => setCardDetails({...cardDetails, name: e.target.value})}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                          />
+                          <div className="flex space-x-3">
+                            <input 
+                              type="text" 
+                              placeholder="MM/YY" 
+                              value={cardDetails.expiry}
+                              onChange={(e) => setCardDetails({...cardDetails, expiry: e.target.value})}
+                              className="w-1/2 px-3 py-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                            />
+                            <input 
+                              type="text" 
+                              placeholder="CVV" 
+                              value={cardDetails.cvv}
+                              onChange={(e) => setCardDetails({...cardDetails, cvv: e.target.value})}
+                              className="w-1/2 px-3 py-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                            />
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
 
-                  <label className={`cursor-pointer flex items-center p-4 border rounded-xl transition ${paymentMethod === 'Cash on Facility' ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/30' : 'border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50'}`}>
-                    <input 
-                      type="radio" 
-                      name="payment_method" 
-                      value="Cash on Facility"
-                      checked={paymentMethod === 'Cash on Facility'}
-                      onChange={(e) => setPaymentMethod(e.target.value)}
-                      className="text-indigo-600 focus:ring-indigo-500 w-5 h-5"
-                    />
-                    <FaMoneyBillWave className="mx-4 text-gray-500 text-xl" />
-                    <span className="font-medium text-gray-900 dark:text-white">Cash on Facility</span>
-                  </label>
+                  <div className="mb-3">
+                    <label className={`cursor-pointer flex items-center p-4 border rounded-xl transition ${paymentMethod === 'UPI (GPay, PhonePe, Paytm)' ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/30' : 'border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50'}`}>
+                      <input 
+                        type="radio" 
+                        name="payment_method" 
+                        value="UPI (GPay, PhonePe, Paytm)"
+                        checked={paymentMethod === 'UPI (GPay, PhonePe, Paytm)'}
+                        onChange={(e) => setPaymentMethod(e.target.value)}
+                        className="text-indigo-600 focus:ring-indigo-500 w-5 h-5"
+                      />
+                      <FaMobileAlt className="mx-4 text-gray-500 text-xl" />
+                      <span className="font-medium text-gray-900 dark:text-white">UPI (GPay, PhonePe, Paytm)</span>
+                    </label>
+
+                    <AnimatePresence>
+                      {paymentMethod === 'UPI (GPay, PhonePe, Paytm)' && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          className="overflow-hidden px-2 mt-2"
+                        >
+                          <input 
+                            type="text" 
+                            placeholder="Enter UPI ID (e.g. user@okicici)" 
+                            value={upiId}
+                            onChange={(e) => setUpiId(e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                          />
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+
+                  <div className="mb-3">
+                    <label className={`cursor-pointer flex items-center p-4 border rounded-xl transition ${paymentMethod === 'Cash on Facility' ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/30' : 'border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50'}`}>
+                      <input 
+                        type="radio" 
+                        name="payment_method" 
+                        value="Cash on Facility"
+                        checked={paymentMethod === 'Cash on Facility'}
+                        onChange={(e) => setPaymentMethod(e.target.value)}
+                        className="text-indigo-600 focus:ring-indigo-500 w-5 h-5"
+                      />
+                      <FaMoneyBillWave className="mx-4 text-gray-500 text-xl" />
+                      <span className="font-medium text-gray-900 dark:text-white">Cash on Facility</span>
+                    </label>
+                  </div>
                 </div>
 
                 <button
