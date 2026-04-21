@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { motion } from 'framer-motion';
+import { toast } from 'react-hot-toast';
 import { FaUsers, FaSearch, FaUserShield, FaSignOutAlt, FaKey, FaTimes, FaTrash } from 'react-icons/fa';
 
 const AdminDashboard = () => {
@@ -80,20 +81,39 @@ const AdminDashboard = () => {
   };
 
   useEffect(() => {
-    fetchUsers();
+    if (token) {
+      fetchUsers();
+    }
   }, [token]);
 
   const fetchUsers = async () => {
+    if (!token) return;
+    
     try {
+      setLoading(true);
+      // We rely on the global axios Authorization header set in AuthContext
+      // but we can also pass it explicitly for extra safety
       const config = {
         headers: { Authorization: `Bearer ${token}` }
       };
+      
       const response = await axios.get(`${API_URL}/admin/users`, config);
       if (response.data.success) {
         setUsers(response.data.users);
       }
     } catch (error) {
       console.error('Error fetching users:', error);
+      
+      if (error.response?.status === 401) {
+        toast.error("Session expired or unauthorized. Please login again.");
+        // Only logout if it's definitely an auth failure
+        setTimeout(() => {
+          logout();
+          navigate('/login');
+        }, 2000);
+      } else {
+        toast.error(error.response?.data?.message || "Failed to fetch users");
+      }
     } finally {
       setLoading(false);
     }

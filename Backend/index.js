@@ -11,10 +11,9 @@ connectDB();
 const app = express();
 
 // Middleware
-app.use(cors());
 // Update CORS middleware
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:3001', 'https://your-frontend-url.com'],
+  origin: ['http://localhost:3000', 'http://localhost:3001',"http://localhost:5174", 'http://localhost:5173', 'https://your-frontend-url.com'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']

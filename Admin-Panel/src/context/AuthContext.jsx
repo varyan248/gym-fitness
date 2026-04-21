@@ -12,26 +12,35 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const initAuth = async () => {
-      const storedToken = localStorage.getItem('adminToken');
-      const storedUser = localStorage.getItem('adminUser');
+      try {
+        const storedToken = localStorage.getItem('adminToken');
+        const storedUser = localStorage.getItem('adminUser');
 
-      if (storedToken && storedUser) {
-        setToken(storedToken);
-        setUser(JSON.parse(storedUser));
-        axios.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
+        if (storedToken && storedUser) {
+          const cleanToken = storedToken.trim().replace(/^["']|["']$/g, '');
+          setToken(cleanToken);
+          setUser(JSON.parse(storedUser));
+          axios.defaults.headers.common['Authorization'] = `Bearer ${cleanToken}`;
+        }
+      } catch (err) {
+        console.error("Auth init error:", err);
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminUser');
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     initAuth();
   }, []);
 
   const handleAuthSuccess = (authToken, userData) => {
-    setToken(authToken);
+    const cleanToken = authToken.trim().replace(/^["']|["']$/g, '');
+    setToken(cleanToken);
     setUser(userData);
-    localStorage.setItem('adminToken', authToken);
+    localStorage.setItem('adminToken', cleanToken);
     localStorage.setItem('adminUser', JSON.stringify(userData));
-    axios.defaults.headers.common['Authorization'] = `Bearer ${authToken}`;
+    axios.defaults.headers.common['Authorization'] = `Bearer ${cleanToken}`;
   };
 
   const login = async (email, password) => {
@@ -40,6 +49,7 @@ export const AuthProvider = ({ children }) => {
       if (response.data.success) {
         const { token: authToken, user: userData } = response.data;
         if (userData.role !== 'admin') {
+           toast.error("Access denied: Not an administrator");
            return { success: false, user: userData };
         }
         handleAuthSuccess(authToken, userData);
