@@ -22,7 +22,7 @@ const UserProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [usingDemoMode, setUsingDemoMode] = useState(false);
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+  const API_URL = import.meta.env.VITE_API_URL || 'http://gym-fitness-uvnr.onrender.com/api';
 
   useEffect(() => {
     if (user) {
