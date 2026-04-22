@@ -13,7 +13,7 @@ const AdminDashboard = () => {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const { token, user, logout, changePassword } = useAuth();
   const navigate = useNavigate();
-  const API_URL = import.meta.env.VITE_API_URL || 'http://gym-fitness-uvnr.onrender.com/api';
+  const API_URL = import.meta.env.VITE_API_URL || 'https://gym-fitness-uvnr.onrender.com/api';
 
   // Password Modal State
   const [showPwdModal, setShowPwdModal] = useState(false);

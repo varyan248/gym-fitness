@@ -22,7 +22,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [currentDay, setCurrentDay] = useState('');
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://gym-fitness-uvnr.onrender.com/api';
+  const API_URL = import.meta.env.VITE_API_URL || 'https://gym-fitness-uvnr.onrender.com/api';
 
   useEffect(() => {
     // Get current day

@@ -13,7 +13,7 @@ const WorkoutPlanner = () => {
 
   const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://gym-fitness-uvnr.onrender.com/api';
+  const API_URL = import.meta.env.VITE_API_URL || 'https://gym-fitness-uvnr.onrender.com/api';
 
   // Default gym workouts for Monday to Saturday
   const defaultWorkouts = [

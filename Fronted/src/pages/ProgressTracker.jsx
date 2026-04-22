@@ -20,7 +20,7 @@ const ProgressTracker = () => {
   const [error, setError] = useState(null);
   const [usingDemoMode, setUsingDemoMode] = useState(true); // Start in demo mode
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://gym-fitness-uvnr.onrender.com/api';
+  const API_URL = import.meta.env.VITE_API_URL || 'https://gym-fitness-uvnr.onrender.com/api';
 
   useEffect(() => {
     // Always use localStorage for now to avoid 401 errors

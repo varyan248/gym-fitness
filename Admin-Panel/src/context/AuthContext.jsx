@@ -3,7 +3,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 
 const AuthContext = createContext();
-const API_URL = 'http://gym-fitness-uvnr.onrender.com/api';
+const API_URL = 'https://gym-fitness-uvnr.onrender.com/api';
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);

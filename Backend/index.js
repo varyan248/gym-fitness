@@ -21,8 +21,8 @@ const app = express();
 
 app.use(cors({
   origin: [
-    "http://localhost:3000",
-    "http://localhost:5173",
+    "https://gym-fitness-uvnr.onrender.com",
+    "https://gym-fitness-uvnr.onrender.com",
     "https://your-frontend.onrender.com"
   ],
   credentials: true
