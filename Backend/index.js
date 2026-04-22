@@ -19,11 +19,19 @@ const app = express();
 //   allowedHeaders: ['Content-Type', 'Authorization']
 // }));
 
+// app.use(cors({
+//   origin: [
+//     "https://gym-fitness-uvnr.onrender.com",
+//     "https://gym-fitness-uvnr.onrender.com",
+//     "https://your-frontend.onrender.com"
+//   ],
+//   credentials: true
+// }));
+
 app.use(cors({
   origin: [
-    "https://gym-fitness-uvnr.onrender.com",
-    "https://gym-fitness-uvnr.onrender.com",
-    "https://your-frontend.onrender.com"
+    "http://localhost:5173",
+    "https://gym-fitness-sv4q.vercel.app"   // 👈 YOUR REAL URL
   ],
   credentials: true
 }));
