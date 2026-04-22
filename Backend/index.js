@@ -28,10 +28,17 @@ const app = express();
 //   credentials: true
 // }));
 
+// app.use(cors({
+//   origin: [
+//     "http://localhost:5173",
+//     "https://gym-fitness-sv4q.vercel.app"   // 👈 YOUR REAL URL
+//   ],
+//   credentials: true
+// }));
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://gym-fitness-sv4q.vercel.app"   // 👈 YOUR REAL URL
+    "https://gym-fitness-8doj.vercel.app"
   ],
   credentials: true
 }));
