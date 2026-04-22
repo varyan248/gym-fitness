@@ -38,13 +38,23 @@ const cors = require("cors");
 
 // Middleware
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://gym-fitness-8doj.vercel.app",
+  "https://gym-fitness-8doj-git-main-aryans-projects-539b3387.vercel.app"
+];
 
 app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://gym-fitness-8doj.vercel.app",
-    "https://gym-fitness-git-main-aryans-projects-539b3387.vercel.app"
-  ],
+  origin: function (origin, callback) {
+    // allow requests like Postman (no origin)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error("CORS not allowed"));
+    }
+  },
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true
