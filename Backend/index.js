@@ -11,32 +11,45 @@ const app = express();
 
 const cors = require("cors");
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://gym-fitness-8doj.vercel.app",
-  "https://gym-fitness-git-main-aryans-projects-539b3387.vercel.app"
-];
+// const allowedOrigins = [
+//   "http://localhost:5173",
+//   "https://gym-fitness-8doj.vercel.app",
+//   "https://gym-fitness-git-main-aryans-projects-539b3387.vercel.app"
+// ];
+
+// app.use(cors({
+//   origin: function (origin, callback) {
+//     // allow requests with no origin (like Postman)
+//     if (!origin) return callback(null, true);
+
+//     if (allowedOrigins.includes(origin)) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error("Not allowed by CORS"));
+//     }
+//   },
+//   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+//   allowedHeaders: ["Content-Type", "Authorization"],
+//   credentials: true
+// }));
+
+// // ✅ handle preflight
+// app.options("/*", cors()); 
+
+// Middleware
+
 
 app.use(cors({
-  origin: function (origin, callback) {
-    // allow requests with no origin (like Postman)
-    if (!origin) return callback(null, true);
-
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
+  origin: [
+    "http://localhost:5173",
+    "https://gym-fitness-8doj.vercel.app",
+    "https://gym-fitness-git-main-aryans-projects-539b3387.vercel.app"
+  ],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true
 }));
 
-// ✅ handle preflight
-app.options("*", cors());
-
-// Middleware
 
 // app.use(cors({
 //   origin: [
