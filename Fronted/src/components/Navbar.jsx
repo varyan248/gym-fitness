@@ -133,7 +133,7 @@ const Navbar = () => {
               {/* Admin Links */}
               {isAdmin && (
                 <div className="relative group">
-                  <a href="http://localhost:5174/" target="_blank" rel="noopener noreferrer" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium inline-flex items-center">
+                  <a href="https://localhost:5174/" target="_blank" rel="noopener noreferrer" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium inline-flex items-center">
                     👑 Admin Panel <span className="ml-1 text-xs opacity-50">↗</span>
                   </a>
                 </div>
