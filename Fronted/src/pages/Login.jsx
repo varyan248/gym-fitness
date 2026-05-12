@@ -116,7 +116,7 @@ const Login = () => {
           </Link>
           <div className="border-t border-gray-200 dark:border-gray-700 pt-3">
             <a
-              href="https://gym-fitness-uvnr.onrender.com"
+              href="https://gym-fitness-wg3l.onrender.com"
               className="text-xs font-semibold text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors"
             >
               Authorized Personnel Login

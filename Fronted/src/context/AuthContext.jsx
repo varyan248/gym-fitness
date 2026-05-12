@@ -6,7 +6,7 @@ const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
 
-const API_URL = import.meta.env.VITE_API_URL || "https://gym-fitness-uvnr.onrender.com/api";
+const API_URL = import.meta.env.VITE_API_URL || "https://gym-fitness-wg3l.onrender.com/api";
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
