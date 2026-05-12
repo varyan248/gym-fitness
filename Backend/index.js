@@ -15,7 +15,8 @@ const allowedOrigins = [
   "http://localhost:5174",
   "https://gym-fitness-8doj.vercel.app",
   "https://gym-fitness-8doj-git-main-aryans-projects-539b3387.vercel.app",
-  "https://gym-fitness-id92.vercel.app"
+  "https://gym-fitness-id92.vercel.app",
+  "https://gym-fitness-smoky.vercel.app"
 ];
 
 app.use(cors({
@@ -23,7 +24,7 @@ app.use(cors({
     // allow requests like Postman (no origin)
     if (!origin) return callback(null, true);
 
-    if (allowedOrigins.includes(origin)) {
+    if (allowedOrigins.includes(origin) || /^https:\/\/gym-fitness-.*\.vercel\.app$/.test(origin)) {
       return callback(null, true);
     } else {
       return callback(new Error("CORS not allowed"));
