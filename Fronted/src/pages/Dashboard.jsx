@@ -115,22 +115,24 @@ const Dashboard = () => {
         {/* Plan Status Banner */}
         <div className="mb-8">
           {user.isPlanActive ? (
-            <div className="bg-gradient-to-r from-green-500 to-green-600 rounded-xl p-4 text-white flex justify-between items-center shadow-lg">
+            <div className="bg-gradient-to-r from-green-500 to-green-600 rounded-xl p-6 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-lg">
               <div>
-                <p className="font-bold text-lg">Active Subscription: {user.plan}</p>
-                <p className="text-sm text-green-100">Valid until: {new Date(user.planEndDate).toLocaleDateString()}</p>
+                <p className="font-bold text-xl mb-1">Active Subscription: {user.plan}</p>
+                <p className="text-sm text-green-100 flex items-center">
+                  <FaCalendarCheck className="mr-2" /> Valid until: {new Date(user.planEndDate).toLocaleDateString()}
+                </p>
               </div>
-              <button onClick={() => navigate('/plans')} className="bg-white text-green-600 px-4 py-2 rounded-lg font-semibold hover:bg-green-50 transition transform hover:scale-105">
+              <button onClick={() => navigate('/plans')} className="w-full sm:w-auto bg-white text-green-600 px-6 py-2.5 rounded-lg font-bold hover:bg-green-50 transition transform hover:scale-105 shadow-md">
                 View Plans
               </button>
             </div>
           ) : (
-            <div className="bg-gradient-to-r from-red-500 to-pink-600 rounded-xl p-4 text-white flex justify-between items-center shadow-lg">
+            <div className="bg-gradient-to-r from-red-500 to-pink-600 rounded-xl p-6 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-lg">
               <div>
-                <p className="font-bold text-lg">No Active Plan</p>
+                <p className="font-bold text-xl mb-1">No Active Plan</p>
                 <p className="text-sm text-red-100">Subscribe to a plan to unlock premium features and personal training.</p>
               </div>
-              <button onClick={() => navigate('/plans')} className="bg-white text-red-600 px-4 py-2 rounded-lg font-semibold hover:bg-red-50 transition transform hover:scale-105">
+              <button onClick={() => navigate('/plans')} className="w-full sm:w-auto bg-white text-red-600 px-6 py-2.5 rounded-lg font-bold hover:bg-red-50 transition transform hover:scale-105 shadow-md">
                 Subscribe Now
               </button>
             </div>

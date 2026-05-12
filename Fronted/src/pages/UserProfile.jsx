@@ -250,13 +250,13 @@ const UserProfile = () => {
                     <p className="text-xs text-gray-500 mt-1">Email cannot be changed</p>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                         Age
                       </label>
-                      <div className="relative">
-                        <FaCalendarAlt className="absolute left-3 top-3 text-gray-400" />
+                      <div className="relative group">
+                        <FaCalendarAlt className="absolute left-3 top-3 text-gray-400 group-hover:text-blue-500 transition" />
                         <input
                           type="number"
                           name="age"
@@ -274,8 +274,8 @@ const UserProfile = () => {
                       <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                         Height (cm)
                       </label>
-                      <div className="relative">
-                        <FaRuler className="absolute left-3 top-3 text-gray-400" />
+                      <div className="relative group">
+                        <FaRuler className="absolute left-3 top-3 text-gray-400 group-hover:text-blue-500 transition" />
                         <input
                           type="number"
                           name="height"
@@ -290,13 +290,13 @@ const UserProfile = () => {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                         Weight (kg)
                       </label>
-                      <div className="relative">
-                        <FaWeight className="absolute left-3 top-3 text-gray-400" />
+                      <div className="relative group">
+                        <FaWeight className="absolute left-3 top-3 text-gray-400 group-hover:text-blue-500 transition" />
                         <input
                           type="number"
                           name="weight"
@@ -315,14 +315,14 @@ const UserProfile = () => {
                       <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                         Fitness Goal
                       </label>
-                      <div className="relative">
-                        <FaBullseye className="absolute left-3 top-3 text-gray-400" />
+                      <div className="relative group">
+                        <FaBullseye className="absolute left-3 top-3 text-gray-400 group-hover:text-blue-500 transition" />
                         <select
                           name="goal"
                           value={formData.goal}
                           onChange={handleChange}
                           disabled={!isEditing}
-                          className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white disabled:bg-gray-100 dark:disabled:bg-gray-600 disabled:cursor-not-allowed transition"
+                          className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white disabled:bg-gray-100 dark:disabled:bg-gray-600 disabled:cursor-not-allowed transition appearance-none"
                         >
                           <option value="Weight Loss">🏃 Weight Loss</option>
                           <option value="Muscle Gain">💪 Muscle Gain</option>

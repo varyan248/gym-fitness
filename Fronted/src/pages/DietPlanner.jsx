@@ -365,20 +365,20 @@ const DietPlanner = () => {
           <div className="lg:col-span-3">
             {/* Workout & Water Banner */}
             <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl shadow-lg p-6 text-white mb-6">
-              <div className="flex items-center justify-between flex-wrap gap-4">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div>
-                  <h2 className="text-xl font-bold mb-2 flex items-center">
-                    <FaDumbbell className="mr-2" />
-                    Today's Workout: {currentPlan?.workout}
+                  <h2 className="text-lg sm:text-xl font-bold mb-1 flex items-center">
+                    <FaDumbbell className="mr-2 shrink-0" />
+                    <span>Today's Workout: {currentPlan?.workout}</span>
                   </h2>
-                  <p className="text-sm opacity-90">Fuel your body for optimal performance</p>
+                  <p className="text-xs sm:text-sm opacity-90">Fuel your body for optimal performance</p>
                 </div>
-                <div className="text-right">
-                  <div className="flex items-center">
-                    <FaWater className="mr-2 text-cyan-200" />
-                    <span className="text-lg font-bold">{currentPlan?.waterIntake} glasses</span>
+                <div className="flex items-center sm:text-right bg-white/20 px-4 py-2 rounded-lg sm:bg-transparent sm:p-0">
+                  <FaWater className="mr-2 text-cyan-200 text-xl" />
+                  <div>
+                    <span className="text-lg font-bold block leading-none">{currentPlan?.waterIntake} glasses</span>
+                    <span className="text-[10px] opacity-80 uppercase tracking-wider">Water Goal</span>
                   </div>
-                  <p className="text-xs opacity-80">Daily water goal</p>
                 </div>
               </div>
             </div>

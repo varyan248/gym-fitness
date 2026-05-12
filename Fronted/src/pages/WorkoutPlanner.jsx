@@ -310,31 +310,32 @@ const WorkoutPlanner = () => {
                 <FaCalendarAlt className="mr-2 text-blue-600" />
                 Weekly Schedule
               </h2>
-              <div className="space-y-2">
+              <div className="flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible gap-2 pb-2 lg:pb-0 scrollbar-hide">
                 {days.map((day) => {
                   const workout = getWorkoutForDay(day);
                   const isRestDay = day === 'Sunday';
+                  const isSelected = selectedDay === day;
                   return (
                     <button
                       key={day}
                       onClick={() => setSelectedDay(day)}
-                      className={`w-full text-left p-3 rounded-lg transition ${
-                        selectedDay === day
-                          ? 'bg-blue-600 text-white'
+                      className={`flex-shrink-0 lg:w-full text-left p-3 rounded-lg transition min-w-[120px] lg:min-w-0 ${
+                        isSelected
+                          ? 'bg-blue-600 text-white shadow-md'
                           : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-white'
                       }`}
                     >
-                      <div className="flex justify-between items-center">
-                        <span className="font-semibold">{day}</span>
+                      <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center">
+                        <span className="font-semibold text-sm lg:text-base">{day}</span>
                         {workout && !isRestDay ? (
-                          <span className="text-sm flex items-center">
+                          <span className="text-[10px] lg:text-sm flex items-center opacity-80 mt-1 lg:mt-0">
                             <FaDumbbell className="inline mr-1" />
                             {workout.duration} min
                           </span>
                         ) : isRestDay ? (
-                          <span className="text-sm">Rest Day 🧘</span>
+                          <span className="text-[10px] lg:text-sm opacity-80 mt-1 lg:mt-0">Rest Day 🧘</span>
                         ) : (
-                          <span className="text-sm">Workout</span>
+                          <span className="text-[10px] lg:text-sm opacity-80 mt-1 lg:mt-0">Workout</span>
                         )}
                       </div>
                     </button>
@@ -401,9 +402,26 @@ const WorkoutPlanner = () => {
                   return (
                     <>
                       <div className="mb-6">
-                        <h2 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">
-                          {workout.title}
-                        </h2>
+                        {/* Workout & Water Banner */}
+                        <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl shadow-lg p-6 text-white mb-6">
+                          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                            <div>
+                              <h2 className="text-lg sm:text-xl font-bold mb-1 flex items-center">
+                                <FaDumbbell className="mr-2 shrink-0" />
+                                <span>{workout.title}</span>
+                              </h2>
+                              <p className="text-xs sm:text-sm opacity-90">Fuel your body for optimal performance</p>
+                            </div>
+                            <div className="flex items-center sm:text-right bg-white/20 px-4 py-2 rounded-lg sm:bg-transparent sm:p-0">
+                              <FaWater className="mr-2 text-cyan-200 text-xl" />
+                              <div>
+                                <span className="text-lg font-bold block leading-none">{workout.duration} min</span>
+                                <span className="text-[10px] opacity-80 uppercase tracking-wider">Duration</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
                         <div className="flex items-center space-x-4 text-gray-600 dark:text-gray-400">
                           <span className="flex items-center">
                             <FaClock className="mr-1" />

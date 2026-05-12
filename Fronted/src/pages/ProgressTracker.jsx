@@ -423,15 +423,15 @@ const ProgressTracker = () => {
               </p>
             </div>
           ) : (
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto scrollbar-thin">
               <table className="w-full">
                 <thead>
                   <tr className="border-b dark:border-gray-700">
-                    <th className="text-left py-3 px-4 text-gray-700 dark:text-gray-300">Date</th>
-                    <th className="text-left py-3 px-4 text-gray-700 dark:text-gray-300">Weight (kg)</th>
-                    <th className="text-left py-3 px-4 text-gray-700 dark:text-gray-300">BMI</th>
-                    <th className="text-left py-3 px-4 text-gray-700 dark:text-gray-300">Notes</th>
-                    <th className="text-left py-3 px-4 text-gray-700 dark:text-gray-300">Actions</th>
+                    <th className="text-left py-3 px-4 text-gray-700 dark:text-gray-300 text-sm">Date</th>
+                    <th className="text-left py-3 px-4 text-gray-700 dark:text-gray-300 text-sm">Weight</th>
+                    <th className="text-left py-3 px-4 text-gray-700 dark:text-gray-300 text-sm hidden sm:table-cell">BMI</th>
+                    <th className="text-left py-3 px-4 text-gray-700 dark:text-gray-300 text-sm hidden md:table-cell">Notes</th>
+                    <th className="text-right py-3 px-4 text-gray-700 dark:text-gray-300 text-sm">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -443,29 +443,28 @@ const ProgressTracker = () => {
                       transition={{ delay: index * 0.05 }}
                       className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700"
                     >
-                      <td className="py-3 px-4 text-gray-900 dark:text-white">
+                      <td className="py-3 px-4 text-gray-900 dark:text-white text-sm">
                         {new Date(entry.date).toLocaleDateString('en-US', { 
-                          year: 'numeric', 
                           month: 'short', 
                           day: 'numeric' 
                         })}
                       </td>
-                      <td className="py-3 px-4 text-gray-900 dark:text-white font-semibold">
+                      <td className="py-3 px-4 text-gray-900 dark:text-white font-semibold text-sm">
                         {entry.weight} kg
                       </td>
-                      <td className="py-3 px-4 text-gray-900 dark:text-white">
+                      <td className="py-3 px-4 text-gray-900 dark:text-white text-sm hidden sm:table-cell">
                         {entry.bmi || calculateBMI(entry.weight)} 
                       </td>
-                      <td className="py-3 px-4 text-gray-900 dark:text-white max-w-xs truncate">
+                      <td className="py-3 px-4 text-gray-900 dark:text-white max-w-xs truncate text-sm hidden md:table-cell">
                         {entry.notes || '-'}
                       </td>
-                      <td className="py-3 px-4">
+                      <td className="py-3 px-4 text-right">
                         <button
                           onClick={() => handleDeleteProgress(entry._id)}
                           className="text-red-500 hover:text-red-700 transition p-2 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg"
                           title="Delete entry"
                         >
-                          <FaTrash />
+                          <FaTrash size={14} />
                         </button>
                       </td>
                     </motion.tr>

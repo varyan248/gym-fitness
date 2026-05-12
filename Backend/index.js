@@ -1,43 +1,15 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const connectDB = require("./Db/db.js");
-// const cors = require('cors');
+const cors = require("cors");
 const dotenv = require('dotenv');
 const path = require('path');
 
 dotenv.config();
-connectDB();
+
 const app = express();
 
-const cors = require("cors");
-
-// const allowedOrigins = [
-//   "http://localhost:5173",
-//   "https://gym-fitness-8doj.vercel.app",
-//   "https://gym-fitness-git-main-aryans-projects-539b3387.vercel.app"
-// ];
-
-// app.use(cors({
-//   origin: function (origin, callback) {
-//     // allow requests with no origin (like Postman)
-//     if (!origin) return callback(null, true);
-
-//     if (allowedOrigins.includes(origin)) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error("Not allowed by CORS"));
-//     }
-//   },
-//   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-//   allowedHeaders: ["Content-Type", "Authorization"],
-//   credentials: true
-// }));
-
-// // ✅ handle preflight
-// app.options("/*", cors()); 
-
 // Middleware
-
 const allowedOrigins = [
   "http://localhost:5173",
   "https://gym-fitness-8doj.vercel.app",
@@ -60,19 +32,6 @@ app.use(cors({
   credentials: true
 }));
 
-// app.use(cors({
-//   origin: [
-//     "http://localhost:5173",
-//     "https://gym-fitness-8doj.vercel.app",
-//     "https://gym-fitness-git-main-aryans-projects-539b3387.vercel.app"
-//   ],
-//   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-//   allowedHeaders: ["Content-Type", "Authorization"],
-//   credentials: true
-// }));
-
-// app.options('/*', cors());
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -92,6 +51,15 @@ app.use('/api/workouts', workoutRoutes);
 app.use('/api/diets', dietRoutes);
 app.use('/api/progress', progressRoutes);
 
+// Health check route (useful for Render)
+app.get('/api/health', (req, res) => {
+  res.json({ 
+    success: true, 
+    message: 'Server is running',
+    dbStatus: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected'
+  });
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
@@ -101,8 +69,14 @@ app.use((err, req, res, next) => {
   });
 });
 
-
+// Connect to DB FIRST, then start the server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}).catch((err) => {
+  console.error('Failed to connect to MongoDB:', err.message);
+  process.exit(1);
 });

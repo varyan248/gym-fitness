@@ -1,13 +1,14 @@
-require("dotenv").config();
 const mongoose = require('mongoose');
 
-const connectDb = async() => {
-    try {
-        await mongoose.connect("mongodb://127.0.0.1:27017/GymManagement");
-        console.log("Database connected successfully");
-    } catch (error) {
-        console.error("Error connecting to database", error);
-    }
-}
+const connectDb = async () => {
+  try {
+    console.log('🔄 Connecting to MongoDB...');
+    const conn = await mongoose.connect(process.env.MONGO_URI);
+    console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.error('❌ MongoDB Connection Error:', error.message);
+    process.exit(1);
+  }
+};
 
-module.exports = connectDb
+module.exports = connectDb;

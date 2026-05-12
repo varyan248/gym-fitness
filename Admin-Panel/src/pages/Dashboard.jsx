@@ -183,85 +183,87 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-6 sm:py-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="flex justify-between items-end mb-8">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-8 space-y-6 lg:space-y-0">
           <div>
-            <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white flex items-center">
-              <FaUserShield className="mr-3 text-indigo-600" /> 
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white flex items-center">
+              <FaUserShield className="mr-3 text-indigo-600 shrink-0" /> 
               Admin Dashboard
             </h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-2">
-              Welcome back, Admin {user?.name}. Manage your application users here.
+            <p className="text-gray-600 dark:text-gray-400 mt-2 text-sm sm:text-base">
+              Welcome back, Admin <span className="font-semibold text-indigo-600 dark:text-indigo-400">{user?.name}</span>. Manage your application users here.
             </p>
           </div>
-          <div className="flex items-center space-x-6">
-            <div className="bg-white dark:bg-gray-800 shadow rounded-lg px-6 py-4 text-center">
-              <FaUsers className="mx-auto text-indigo-500 text-2xl mb-1" />
-              <p className="text-sm text-gray-500">Total Users</p>
-              <p className="text-2xl font-bold dark:text-white">{users.length}</p>
+          <div className="flex flex-wrap items-center gap-4 w-full lg:w-auto">
+            <div className="bg-white dark:bg-gray-800 shadow rounded-lg px-4 py-3 sm:px-6 sm:py-4 text-center flex-1 lg:flex-none min-w-[120px]">
+              <FaUsers className="mx-auto text-indigo-500 text-xl sm:text-2xl mb-1" />
+              <p className="text-xs text-gray-500">Total Users</p>
+              <p className="text-xl sm:text-2xl font-bold dark:text-white">{users.length}</p>
             </div>
             
-            <button
-              onClick={() => setShowPwdModal(true)}
-              className="flex items-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg shadow transition-colors"
-            >
-              <FaKey />
-              <span>Change Password</span>
-            </button>
-            <button
-              onClick={() => {
-                logout();
-                navigate('/login');
-              }}
-              className="flex items-center space-x-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg shadow transition-colors"
-            >
-              <FaSignOutAlt />
-              <span>Sign Out</span>
-            </button>
+            <div className="flex gap-2 w-full sm:w-auto flex-1 sm:flex-none">
+              <button
+                onClick={() => setShowPwdModal(true)}
+                className="flex-1 sm:flex-none flex items-center justify-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 px-4 sm:py-3 sm:px-6 rounded-lg shadow transition-colors text-sm sm:text-base"
+              >
+                <FaKey />
+                <span className="whitespace-nowrap">Password</span>
+              </button>
+              <button
+                onClick={() => {
+                  logout();
+                  navigate('/login');
+                }}
+                className="flex-1 sm:flex-none flex items-center justify-center space-x-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-2.5 px-4 sm:py-3 sm:px-6 rounded-lg shadow transition-colors text-sm sm:text-base"
+              >
+                <FaSignOutAlt />
+                <span>Exit</span>
+              </button>
+            </div>
           </div>
         </div>
 
         <div className="bg-white dark:bg-gray-800 shadow-xl rounded-2xl overflow-hidden">
-          <div className="p-6 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
-            <div className="flex items-center">
-              <h2 className="text-xl font-bold text-gray-800 dark:text-white">Registered Users</h2>
+          <div className="p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div className="flex items-center w-full sm:w-auto justify-between sm:justify-start">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-800 dark:text-white whitespace-nowrap">Registered Users</h2>
               {selectedUsers.length > 0 && (
                 <button
                   onClick={handleBulkDelete}
-                  className="ml-4 flex items-center space-x-1 bg-red-500 hover:bg-red-600 text-white text-sm px-3 py-1.5 rounded-lg shadow transition"
+                  className="ml-4 flex items-center space-x-1 bg-red-500 hover:bg-red-600 text-white text-xs px-3 py-1.5 rounded-lg shadow transition shrink-0"
                 >
-                  <FaTrash className="text-xs" />
-                  <span>Delete Selected ({selectedUsers.length})</span>
+                  <FaTrash className="text-[10px]" />
+                  <span>Delete ({selectedUsers.length})</span>
                 </button>
               )}
             </div>
-            <div className="relative">
-              <FaSearch className="absolute left-3 top-3 text-gray-400" />
+            <div className="relative w-full sm:w-64 lg:w-80">
+              <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
               <input 
                 type="text" 
                 placeholder="Search users..." 
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm"
               />
             </div>
           </div>
           
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600">
             {loading ? (
               <div className="flex justify-center p-12">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
               </div>
             ) : (
-              <table className="w-full text-left border-collapse">
+              <table className="w-full text-left border-collapse min-w-[800px] lg:min-w-full">
                 <thead>
                   <tr className="bg-gray-50 dark:bg-gray-700/50">
-                    <th className="px-6 py-4 border-b dark:border-gray-700">
+                    <th className="px-4 sm:px-6 py-4 border-b dark:border-gray-700 w-10">
                       <input 
                         type="checkbox" 
                         onChange={handleSelectAll}
@@ -269,21 +271,19 @@ const AdminDashboard = () => {
                         className="rounded text-indigo-600 focus:ring-indigo-500 bg-white"
                       />
                     </th>
-                    <th className="px-6 py-4 text-sm font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-700">Name</th>
-                    <th className="px-6 py-4 text-sm font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-700">Email</th>
-                    <th className="px-6 py-4 text-sm font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-700">Role</th>
-                    <th className="px-6 py-4 text-sm font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-700">Goal</th>
-                    <th className="px-6 py-4 text-sm font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-700">Plan</th>
-                    <th className="px-6 py-4 text-sm font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-700">Plan Expiry</th>
-                    <th className="px-6 py-4 text-sm font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-700">Joined</th>
-                    <th className="px-6 py-4 text-sm font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-700 text-right">Actions</th>
+                    <th className="px-4 sm:px-6 py-4 text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-700">Name</th>
+                    <th className="px-4 sm:px-6 py-4 text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-700 hidden sm:table-cell">Email</th>
+                    <th className="px-4 sm:px-6 py-4 text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-700">Plan</th>
+                    <th className="px-4 sm:px-6 py-4 text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-700 hidden md:table-cell">Expiry</th>
+                    <th className="px-4 sm:px-6 py-4 text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-700 hidden lg:table-cell">Joined</th>
+                    <th className="px-4 sm:px-6 py-4 text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-700 text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                   {filteredUsers.length > 0 ? (
                     filteredUsers.map((u) => (
                       <tr key={u._id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
-                        <td className="px-6 py-4">
+                        <td className="px-4 sm:px-6 py-4">
                           {u._id !== user?._id && (
                             <input 
                               type="checkbox"
@@ -293,49 +293,50 @@ const AdminDashboard = () => {
                             />
                           )}
                         </td>
-                        <td className="px-6 py-4 font-medium text-gray-900 dark:text-white flex items-center">
-                          <div className="h-8 w-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold mr-3">
-                            {u.name.charAt(0).toUpperCase()}
+                        <td className="px-4 sm:px-6 py-4 font-medium text-gray-900 dark:text-white">
+                          <div className="flex items-center">
+                            <div className="h-8 w-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold mr-3 shrink-0">
+                              {u.name.charAt(0).toUpperCase()}
+                            </div>
+                            <div className="flex flex-col">
+                              <span className="truncate max-w-[120px] sm:max-w-none">{u.name}</span>
+                              <span className="text-[10px] text-gray-400 sm:hidden">{u.email}</span>
+                            </div>
                           </div>
-                          {u.name}
                         </td>
-                        <td className="px-6 py-4 text-gray-500 dark:text-gray-300">{u.email}</td>
-                        <td className="px-6 py-4">
-                          <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${u.role === 'admin' ? 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200' : 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'}`}>
-                            {u.role.toUpperCase()}
-                          </span>
+                        <td className="px-4 sm:px-6 py-4 text-gray-500 dark:text-gray-300 hidden sm:table-cell">
+                          <span className="truncate block max-w-[150px] lg:max-w-none">{u.email}</span>
                         </td>
-                        <td className="px-6 py-4 text-gray-500 dark:text-gray-300">{u.goal || 'N/A'}</td>
-                        <td className="px-6 py-4">
-                          <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${u.isPlanActive && u.plan !== 'None' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'}`}>
+                        <td className="px-4 sm:px-6 py-4">
+                          <span className={`px-2 py-0.5 inline-flex text-[10px] leading-5 font-semibold rounded-full ${u.isPlanActive && u.plan !== 'None' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'}`}>
                             {u.plan || 'None'}
                           </span>
                         </td>
-                        <td className="px-6 py-4 text-gray-500 dark:text-gray-300">{u.planEndDate ? new Date(u.planEndDate).toLocaleDateString() : 'N/A'}</td>
-                        <td className="px-6 py-4 text-gray-500 dark:text-gray-300">{new Date(u.createdAt).toLocaleDateString()}</td>
-                        <td className="px-6 py-4 text-right whitespace-nowrap">
+                        <td className="px-4 sm:px-6 py-4 text-gray-500 dark:text-gray-300 text-sm hidden md:table-cell">{u.planEndDate ? new Date(u.planEndDate).toLocaleDateString() : 'N/A'}</td>
+                        <td className="px-4 sm:px-6 py-4 text-gray-500 dark:text-gray-300 text-sm hidden lg:table-cell">{new Date(u.createdAt).toLocaleDateString()}</td>
+                        <td className="px-4 sm:px-6 py-4 text-right whitespace-nowrap">
                           {u._id !== user?._id && (
-                            <>
+                            <div className="flex justify-end gap-2">
                               <button
                                 onClick={() => openPlanModal(u)}
-                                className="text-indigo-500 hover:text-indigo-700 transition font-medium text-sm px-3 py-1 bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-900/30 dark:hover:bg-indigo-900/50 rounded-md mr-2"
+                                className="text-indigo-500 hover:text-indigo-700 transition font-medium text-xs px-2 py-1 bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-900/30 dark:hover:bg-indigo-900/50 rounded-md"
                               >
-                                Edit Plan
+                                Edit
                               </button>
                               <button
                                 onClick={() => handleDeleteUser(u._id, u.name)}
-                                className="text-red-500 hover:text-red-700 transition font-medium text-sm px-3 py-1 bg-red-50 hover:bg-red-100 dark:bg-red-900/30 dark:hover:bg-red-900/50 rounded-md"
+                                className="text-red-500 hover:text-red-700 transition font-medium text-xs px-2 py-1 bg-red-50 hover:bg-red-100 dark:bg-red-900/30 dark:hover:bg-red-900/50 rounded-md"
                               >
                                 Delete
                               </button>
-                            </>
+                            </div>
                           )}
                         </td>
                       </tr>
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="8" className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
+                      <td colSpan="7" className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
                         No users found matching your search.
                       </td>
                     </tr>
@@ -345,6 +346,7 @@ const AdminDashboard = () => {
             )}
           </div>
         </div>
+
       </motion.div>
 
       {/* Change Password Modal */}
