@@ -56,10 +56,10 @@ export const AuthProvider = ({ children }) => {
         name: userData.fullName || userData.name,
         email: userData.email,
         password: userData.password,
-        age: parseInt(userData.age),
-        height: parseInt(userData.height),
-        weight: parseInt(userData.weight),
-        goal: userData.goal
+        age: parseInt(userData.age) || null,
+        height: parseInt(userData.height) || null,
+        weight: parseInt(userData.weight) || null,
+        goal: userData.goal || 'Stay Fit'
       };
 
       const response = await axios.post(`${API_URL}/auth/register`, formattedData);

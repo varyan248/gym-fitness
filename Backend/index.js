@@ -12,6 +12,7 @@ const app = express();
 // Middleware
 const allowedOrigins = [
   "http://localhost:5173",
+  "http://localhost:5174",
   "https://gym-fitness-8doj.vercel.app",
   "https://gym-fitness-8doj-git-main-aryans-projects-539b3387.vercel.app"
 ];
