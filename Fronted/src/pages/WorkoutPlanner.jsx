@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { motion } from 'framer-motion';
-import { FaCalendarAlt, FaClock, FaDumbbell, FaInfoCircle } from 'react-icons/fa';
+import { FaCalendarAlt, FaClock, FaDumbbell, FaInfoCircle, FaWater } from 'react-icons/fa';
 
 const WorkoutPlanner = () => {
   const { user, token } = useAuth();
