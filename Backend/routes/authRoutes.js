@@ -11,22 +11,17 @@ const cleanEnvVar = (value) => {
   return value.trim().replace(/^["']|["']$/g, '').replace(/,/g, '');
 };
 
-// Generate JWT with cleaned values
+const JWT_SECRET = cleanEnvVar(process.env.JWT_SECRET);
+const JWT_EXPIRE = cleanEnvVar(process.env.JWT_EXPIRE) || '7d';
+
+// Generate JWT
 const generateToken = (id) => {
-  const secret = cleanEnvVar(process.env.JWT_SECRET);
-  const expiresIn = cleanEnvVar(process.env.JWT_EXPIRE);
-  
-  console.log('Generating token with:', { 
-    secretExists: !!secret, 
-    expiresIn: expiresIn 
-  });
-  
-  if (!secret) {
+  if (!JWT_SECRET) {
     throw new Error('JWT_SECRET is not defined');
   }
   
-  return jwt.sign({ id }, secret, {
-    expiresIn: expiresIn || '7d',
+  return jwt.sign({ id }, JWT_SECRET, {
+    expiresIn: JWT_EXPIRE,
   });
 };
 
@@ -44,13 +39,7 @@ router.post('/register', async (req, res) => {
       });
     }
     
-    // Check if user exists
-    const userExists = await User.findOne({ email });
-    if (userExists) {
-      return res.status(400).json({ success: false, message: 'User already exists' });
-    }
-    
-    // Create user
+    // Create user (Unique email will be handled by Mongoose/MongoDB)
     const user = await User.create({
       name,
       email,
@@ -92,6 +81,9 @@ router.post('/register', async (req, res) => {
       res.status(400).json({ success: false, message: 'Invalid user data' });
     }
   } catch (error) {
+    if (error.code === 11000) {
+      return res.status(400).json({ success: false, message: 'Email already registered' });
+    }
     console.error('Registration error:', error);
     res.status(500).json({ success: false, message: error.message });
   }
