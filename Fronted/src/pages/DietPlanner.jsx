@@ -10,9 +10,12 @@ import {
 
 const DietPlanner = () => {
   const { user, token } = useAuth();
-  const [dietPlan, setDietPlan] = useState(null);
+  const [dietPlan, setDietPlan] = useState(() => {
+    const saved = localStorage.getItem('cached_diet_plan');
+    return saved ? JSON.parse(saved) : null;
+  });
   const [selectedDay, setSelectedDay] = useState('Monday');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!localStorage.getItem('cached_diet_plan'));
   const [error, setError] = useState(null);
 
   const API_URL = import.meta.env.VITE_API_URL || 'https://gym-fitness-wg3l.onrender.com/api';
@@ -249,6 +252,7 @@ const DietPlanner = () => {
       
       const response = await axios.get(`${API_URL}/users/diet-plan`, config);
       setDietPlan(response.data.diet);
+      localStorage.setItem('cached_diet_plan', JSON.stringify(response.data.diet));
       setError(null);
     } catch (error) {
       console.error('Error fetching diet plan:', error);

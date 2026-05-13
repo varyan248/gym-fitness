@@ -9,7 +9,14 @@ export const useAuth = () => useContext(AuthContext);
 const API_URL = import.meta.env.VITE_API_URL || "https://gym-fitness-wg3l.onrender.com/api";
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem('user');
+    try {
+      return savedUser ? JSON.parse(savedUser) : null;
+    } catch {
+      return null;
+    }
+  });
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(localStorage.getItem('token'));
 
@@ -19,16 +26,23 @@ export const AuthProvider = ({ children }) => {
       fetchUser();
     } else {
       setLoading(false);
+      setUser(null);
+      localStorage.removeItem('user');
     }
   }, [token]);
 
   const fetchUser = async () => {
     try {
       const response = await axios.get(`${API_URL}/auth/me`);
-      setUser(response.data.user);
+      const userData = response.data.user;
+      setUser(userData);
+      localStorage.setItem('user', JSON.stringify(userData));
     } catch (error) {
       console.error('Error fetching user:', error);
-      logout();
+      // Only logout if it's an authentication error (401)
+      if (error.response?.status === 401) {
+        logout();
+      }
     } finally {
       setLoading(false);
     }
@@ -103,6 +117,7 @@ export const AuthProvider = ({ children }) => {
 
   const handleAuthSuccess = (authToken, userData) => {
     localStorage.setItem('token', authToken);
+    localStorage.setItem('user', JSON.stringify(userData));
     axios.defaults.headers.common['Authorization'] = `Bearer ${authToken}`;
     setToken(authToken);
     setUser(userData);
@@ -110,6 +125,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     delete axios.defaults.headers.common['Authorization'];
     setToken(null);
     setUser(null);

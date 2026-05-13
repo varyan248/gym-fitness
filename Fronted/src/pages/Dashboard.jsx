@@ -18,8 +18,11 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 const Dashboard = () => {
   const navigate = useNavigate();
   const { user, token } = useAuth();
-  const [progress, setProgress] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [progress, setProgress] = useState(() => {
+    const saved = localStorage.getItem('dashboard_progress');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [loading, setLoading] = useState(!localStorage.getItem('dashboard_progress'));
   const [currentDay, setCurrentDay] = useState('');
 
   const API_URL = import.meta.env.VITE_API_URL || 'https://gym-fitness-wg3l.onrender.com/api';
@@ -40,7 +43,6 @@ const Dashboard = () => {
   const fetchDashboardData = async () => {
     try {
       if (!token) {
-        console.error('No token found');
         setLoading(false);
         return;
       }
@@ -53,19 +55,24 @@ const Dashboard = () => {
 
       try {
         const progressRes = await axios.get(`${API_URL}/progress/stats`, config);
-        setProgress(progressRes.data.stats || []);
+        const stats = progressRes.data.stats || [];
+        setProgress(stats);
+        localStorage.setItem('dashboard_progress', JSON.stringify(stats));
       } catch (error) {
-        console.log('Progress endpoint not available:', error.response?.status);
-        // Set sample progress data
-        setProgress({
-          weightTrend: [
-            { date: 'Week 1', weight: 75 },
-            { date: 'Week 2', weight: 74 },
-            { date: 'Week 3', weight: 73 },
-            { date: 'Week 4', weight: 72 },
-            { date: 'Week 5', weight: 71 },
-          ]
-        });
+        console.log('Progress endpoint not available, using fallback');
+        if (!localStorage.getItem('dashboard_progress')) {
+          const fallbackStats = {
+            weightTrend: [
+              { date: 'Week 1', weight: 75 },
+              { date: 'Week 2', weight: 74 },
+              { date: 'Week 3', weight: 73 },
+              { date: 'Week 4', weight: 72 },
+              { date: 'Week 5', weight: 71 },
+            ]
+          };
+          setProgress(fallbackStats);
+          localStorage.setItem('dashboard_progress', JSON.stringify(fallbackStats));
+        }
       }
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
