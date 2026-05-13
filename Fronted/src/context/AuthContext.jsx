@@ -17,7 +17,12 @@ export const AuthProvider = ({ children }) => {
       return null;
     }
   });
-  const [loading, setLoading] = useState(true);
+  
+  // Set loading to false immediately if we have a cached user to show
+  const [loading, setLoading] = useState(() => {
+    return !localStorage.getItem('user') && !!localStorage.getItem('token');
+  });
+  
   const [token, setToken] = useState(localStorage.getItem('token'));
 
   useEffect(() => {
