@@ -11,6 +11,7 @@ import {
   FaChevronRight,
   FaArrowLeft
 } from 'react-icons/fa';
+import SEO from '../components/SEO';
 
 const WorkoutPlanner = () => {
   const { user, token } = useAuth();
@@ -161,6 +162,11 @@ const WorkoutPlanner = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 md:py-12">
+      <SEO 
+        title="Workout Planner" 
+        description="Plan your weekly gym routine with GymPro. Custom chest, back, leg, and arm workouts tailored to your goals." 
+        keywords="workout plan, gym routine, weightlifting, bodybuilding, fitness schedule"
+      />
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}

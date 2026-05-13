@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://gym-fitness-smoky.vercel.app/sitemap.xml

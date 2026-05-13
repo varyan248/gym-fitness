@@ -7,6 +7,7 @@ import {
   FaCalendarAlt, FaClock, FaDumbbell, FaFire, FaCarrot, FaFish, 
   FaEgg, FaSeedling, FaCheese, FaBreadSlice 
 } from 'react-icons/fa';
+import SEO from '../components/SEO';
 
 const DietPlanner = () => {
   const { user, token } = useAuth();
@@ -290,6 +291,11 @@ const DietPlanner = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <SEO 
+        title="Diet Planner" 
+        description="Get personalized meal plans and nutrition advice with GymPro. Balanced diets for muscle gain, weight loss, and athletic performance." 
+        keywords="diet plan, meal planning, nutrition, healthy eating, gym diet, macro tracking"
+      />
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

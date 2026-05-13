@@ -15,6 +15,8 @@ import {
 } from 'react-icons/fa';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
+import SEO from '../components/SEO';
+
 const Dashboard = () => {
   const navigate = useNavigate();
   const { user, token } = useAuth();
@@ -107,6 +109,11 @@ const Dashboard = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <SEO 
+        title="Dashboard" 
+        description="View your fitness progress, upcoming workouts, and personalized health metrics on your GymPro dashboard." 
+        keywords="fitness dashboard, gym progress, workout stats, calorie tracking"
+      />
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
